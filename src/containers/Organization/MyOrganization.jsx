@@ -112,7 +112,14 @@ const MyOrganization = () => {
         <Typography variant="body1" gutterBottom component="div">
           Created by : {organizationDetails?.created_by}
         </Typography>
-
+        <Grid container direction="row" justifyContent="right" alignItems="right" sx={{ml:-3}}>
+        <Button
+             // className={classes.projectButton}
+              label={"Create Organization"}
+              onClick={() => navigate(`/create-organization`)}
+            />
+       
+        </Grid>
         <Box>
           <Tabs
             value={value}

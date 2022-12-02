@@ -20,6 +20,8 @@ import ChangePassword from "./containers/UserManagement/ChangePassword";
 import ConfirmForgotPassword from "./containers/UserManagement/ConfirmForgotPassword";
 import ForgotPassword from "./containers/UserManagement/ForgotPassword";
 import ComparisonTable from "./containers/Organization/Project/ComparisonTable";
+import CreateOrganization from "./containers/Organization/CreateOrganization";
+
 
 const RootRouter = () => {
   const ProtectedRoute = ({ user, children }) => {
@@ -92,6 +94,12 @@ const RootRouter = () => {
           path="/comparison-table/:id"
           element={ProtectedRouteWrapper(
             <Layout component={<ComparisonTable />} />
+          )}
+        />
+         <Route
+          path="/create-organization"
+          element={ProtectedRouteWrapper(
+            <Layout component={<CreateOrganization />} />
           )}
         />
         
