@@ -29,6 +29,7 @@ const ComparisonTable = (id) => {
   
   const taskList = useSelector((state) => state.getTaskList.data);
 
+  const [taskid, setTaskid] = useState();
   const [selectValue, setSelectValue] = useState([{ id: 0, value: "" }]);
   const [selectTranscriptionValue, setSelectTranscriptionValue] = useState([{ id: 0, value: "" }]);
 
@@ -95,15 +96,12 @@ const ComparisonTable = (id) => {
     },
   ];
 
-  let projectid ;
-  let videoname;
+  let Taskid ;
   useEffect(() => {
     taskList?.map((element, index) => {
-      projectid= element.id; 
-      videoname= element.video_name
-
-
+      Taskid= element.id; 
     });
+    setTaskid(Taskid)
   }, [taskList]);
 
   useEffect(() => {
@@ -117,12 +115,12 @@ const handleSubmit = () =>{
   payload:"data"
  }
 
-  const projectObj = new ComparisionTableAPI(projectid,data);
+  const projectObj = new ComparisionTableAPI(taskid,data);
   dispatch(APITransport(projectObj));
 }
  
 
-
+console.log("videoname",taskid)
 
 
 
@@ -286,7 +284,7 @@ const handleSubmit = () =>{
   return (
     <Grid container spacing={2} style={{ alignItems: "center" }}>
       <Card className={classes.orgCard}>
-        <TaskVideoDialog  videoName={videoname}/>
+        <TaskVideoDialog  TaskList={taskList}/>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12} sx={{ mb: 4 }}>
           <Typography variant="h4">Compare Transcription Type</Typography>
         </Grid>
