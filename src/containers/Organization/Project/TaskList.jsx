@@ -129,7 +129,7 @@ console.log(taskList,"taskList",taskid)
   const renderViewButton = (tableData) => {
     console.log(tableData, "tableDatatableData");
     return (
-      ((tableData.rowData[5] === "NEW" || tableData.rowData[5] === "INPROGRESS") && (tableData.rowData[1] !== "TRANSCRIPTION_REVIEW" || tableData.rowData[1] !== "TRANSLATION_REVIEW")) && (
+      ((tableData.rowData[5] === "NEW" || tableData.rowData[5] === "INPROGRESS") && (tableData.rowData[1] !== "TRANSCRIPTION_REVIEW" && tableData.rowData[1] !== "TRANSLATION_REVIEW")) && (
         <CustomButton
           sx={{ borderRadius: 2 }}
           label="View"
@@ -160,7 +160,7 @@ console.log(taskList,"taskList",taskid)
     console.log("tableData ---- ", tableData);
     return(
       ((tableData.rowData[5] === "SELECTED_SOURCE" && (tableData.rowData[1] === "TRANSCRIPTION_EDIT" || tableData.rowData[1] === "TRANSLATION_EDIT")) 
-      || (tableData.rowData[1] === "TRANSCRIPTION_REVIEW" || tableData.rowData[1] === "TRANSLATION_REVIEW")) && 
+      || ((tableData.rowData[1] === "TRANSCRIPTION_REVIEW" || tableData.rowData[1] === "TRANSLATION_REVIEW") && tableData.rowData[5] !== "COMPLETE")) && 
       <CustomButton
         sx={{ borderRadius: 2}}
         label="Edit"
@@ -177,7 +177,7 @@ console.log(taskList,"taskList",taskid)
   const renderDeleteButton = (tableData) => {
     return (
       <CustomButton
-        sx={{ borderRadius: 2, marginLeft: 2 }}
+        sx={{ borderRadius: 2 }}
         color="error"
         label="Delete"
         onClick={handledeletetask}
@@ -270,12 +270,12 @@ console.log(taskList,"taskList",taskid)
         }),
         customBodyRender: (value, tableMeta) => {
           return (
-            <Box sx={{ display: "flex" }}>
+            <Grid sx={{ display: "flex", justifyContent: "space-evenly" }} gap={2} spacing={2}>
               {renderViewButton(tableMeta)}
               {renderEditButton(tableMeta)}
               {renderExportButton(tableMeta)}
               {renderDeleteButton(tableMeta)}
-            </Box>
+            </Grid>
 
             // <CustomButton
             //   sx={{ borderRadius: 2, marginRight: 2 }}
