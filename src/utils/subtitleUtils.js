@@ -1,6 +1,7 @@
 import Sub from "./Sub";
 import { getUpdatedTime } from "./utils";
 import DT from "duration-time-conversion";
+import store from "../redux/store/store";
 
 export const newSub = (item) => {
   return new Sub(item);
@@ -13,11 +14,13 @@ export const formatSub = (sub) => {
   return newSub(sub);
 };
 
-export const hasSub = (sub, subtitles) => {
+export const hasSub = (sub) => {
+  const subtitles = store.getState().commonReducer.subtitles;
   return subtitles.indexOf(sub);
 };
 
-export const copySubs = (subtitles) => {
+export const copySubs = () => {
+  const subtitles = store.getState().commonReducer.subtitles;
   return formatSub(subtitles);
 };
 
@@ -53,8 +56,9 @@ export const getKeyCode = (event) => {
   }
 };
 
-export const timeChange = (sourceText, value, index, type, time) => {
-  const copySub = [...sourceText];
+export const timeChange = (value, index, type, time) => {
+  const subtitles = store.getState().commonReducer.subtitles;
+  const copySub = [...subtitles];
 
   if (type === "startTime") {
     copySub[index].start_time = getUpdatedTime(
@@ -73,15 +77,17 @@ export const timeChange = (sourceText, value, index, type, time) => {
   return copySub;
 };
 
-export const addSubtitleBox = (sourceText, index) => {
-  const copySub = copySubs(sourceText);
+export const addSubtitleBox = (index) => {
+  const subtitles = store.getState().commonReducer.subtitles;
+  const copySub = copySubs(subtitles);
+
   copySub.splice(
     index + 1,
     0,
     newSub({
       start_time: copySub[index].end_time,
       end_time:
-        index < sourceText.length - 1
+        index < subtitles.length - 1
           ? copySub[index + 1].start_time
           : copySub[index].end_time,
       text: "SUB_TEXT",
@@ -92,7 +98,8 @@ export const addSubtitleBox = (sourceText, index) => {
   return copySub;
 };
 
-export const onMerge = (subtitles, index) => {
+export const onMerge = (index) => {
+  const subtitles = store.getState().commonReducer.subtitles;
   const existingsourceData = copySubs(subtitles);
 
   existingsourceData.splice(
@@ -113,14 +120,17 @@ export const onMerge = (subtitles, index) => {
   return existingsourceData;
 };
 
-export const onSubtitleDelete = (subtitles, index) => {
+export const onSubtitleDelete = (index) => {
+  const subtitles = store.getState().commonReducer.subtitles;
+
   const copySub = copySubs(subtitles);
   copySub.splice(index, 1);
 
   return copySub;
 };
 
-export const onSplit = (subtitles, currentIndex, selectionStart) => {
+export const onSplit = (currentIndex, selectionStart, targetSelectionStart = null) => {
+  const subtitles = store.getState().commonReducer.subtitles;
   const copySub = copySubs(subtitles);
 
   const targetTextBlock = subtitles[currentIndex];
@@ -128,8 +138,10 @@ export const onSplit = (subtitles, currentIndex, selectionStart) => {
 
   const text1 = targetTextBlock.text.slice(0, selectionStart).trim();
   const text2 = targetTextBlock.text.slice(selectionStart).trim();
+  const targetText1 = targetSelectionStart ? targetTextBlock.target_text.slice(0, targetSelectionStart).trim() : null;
+  const targetText2 = targetSelectionStart ? targetTextBlock.target_text.slice(targetSelectionStart).trim() : null;
 
-  if (!text1 || !text2) return;
+  if ((!text1 || !text2) || (targetSelectionStart && (!targetText1 || !targetText2))) return;
 
   const splitDuration = (
     targetTextBlock.duration *
@@ -152,6 +164,7 @@ export const onSplit = (subtitles, currentIndex, selectionStart) => {
       start_time: subtitles[currentIndex].start_time,
       end_time: middleTime,
       text: text1,
+      ...(targetSelectionStart && { target_text: targetText1 })
     })
   );
 
@@ -162,8 +175,135 @@ export const onSplit = (subtitles, currentIndex, selectionStart) => {
       start_time: middleTime,
       end_time: subtitles[currentIndex].end_time,
       text: text2,
+      ...(targetSelectionStart && { target_text: targetText2 })
     })
   );
 
   return copySub;
+};
+
+export const fullscreenUtil = (element) => {
+  let doc = window.document;
+  let docEl = element;
+
+  const requestFullScreen =
+    docEl.requestFullscreen ||
+    docEl.mozRequestFullScreen ||
+    docEl.webkitRequestFullScreen ||
+    docEl.msRequestFullscreen;
+
+  const cancelFullScreen =
+    doc.exitFullscreen ||
+    doc.mozCancelFullScreen ||
+    doc.webkitExitFullscreen ||
+    doc.msExitFullscreen;
+
+  if (
+    !doc.fullscreenElement &&
+    !doc.mozFullScreenElement &&
+    !doc.webkitFullscreenElement &&
+    !doc.msFullscreenElement
+  ) {
+    requestFullScreen.call(docEl);
+    return true;
+  } else {
+    cancelFullScreen.call(doc);
+    return false;
+  }
+};
+
+export const themeMenu = [
+  { label: "Light", mode: "light" },
+  { label: "Dark", mode: "dark" },
+];
+
+export const playbackSpeed = [
+  {
+    label: "0.25",
+    speed: 0.25,
+  },
+  {
+    label: "0.5",
+    speed: 0.5,
+  },
+  {
+    label: "0.75",
+    speed: 0.75,
+  },
+  {
+    label: "Normal",
+    speed: 1,
+  },
+  {
+    label: "1.25",
+    speed: 1.25,
+  },
+  {
+    label: "1.5",
+    speed: 1.5,
+  },
+  {
+    label: "1.75",
+    speed: 1.75,
+  },
+  {
+    label: "2",
+    speed: 2,
+  },
+];
+
+export const placementMenu = [
+  { label: "Top", mode: "top" },
+  { label: "Bottom", mode: "bottom" },
+];
+
+export const onUndoAction = (lastAction) => {
+  const subtitles = store.getState().commonReducer.subtitles;
+  if (lastAction.type === "merge") {
+    console.log(lastAction, "lastAction");
+    return (
+      onSplit(
+        lastAction.index,
+        lastAction.selectionStart >= subtitles[lastAction.index].text.length
+          ? subtitles[lastAction.index].text.length / 2
+          : lastAction.selectionStart,
+        lastAction.targetSelectionStart >= subtitles[lastAction.index].target_text.length
+          ? subtitles[lastAction.index].target_text.length / 2
+          : lastAction.targetSelectionStart
+      ) ?? subtitles
+    );
+  } else if (lastAction.type === "split") {
+    return onMerge(lastAction.index) ?? subtitles;
+  } else if (lastAction.type === "delete") {
+    const copySub = copySubs(subtitles);
+    copySub.splice(lastAction.index, 0, lastAction.data);
+    return copySub;
+  } else if (lastAction.type === "add") {
+    return onSubtitleDelete(lastAction.index+1);
+  }
+  return subtitles;
+};
+
+export const onRedoAction = (lastAction) => {
+  const subtitles = store.getState().commonReducer.subtitles;
+  if (lastAction.type === "merge") {
+    return onMerge(lastAction.index) ?? subtitles;
+  } else if (lastAction.type === "split") {
+    return (
+      onSplit(
+        lastAction.index,
+        lastAction.selectionStart >= subtitles[lastAction.index].text.length
+          ? subtitles[lastAction.index].text.length / 2
+          : lastAction.selectionStart,
+        lastAction.targetSelectionStart >= subtitles[lastAction.index].target_text.length
+          ? subtitles[lastAction.index].target_text.length / 2
+          : lastAction.targetSelectionStart
+      ) ?? subtitles
+    );
+  } else if (lastAction.type === "delete") {
+    return onSubtitleDelete(lastAction.index);
+  } else if (lastAction.type === "add") {
+    return addSubtitleBox(lastAction.index);
+  }
+  return subtitles;
 };

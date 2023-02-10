@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import CheckIcon from "@mui/icons-material/Check";
-import { fontMenu } from "../utils/subtitleUtils";
+import { fontMenu, playbackSpeed, themeMenu, placementMenu } from "../utils/subtitleUtils";
 
 const CustomMenuComponent = ({
   anchorElSettings,
@@ -14,10 +14,13 @@ const CustomMenuComponent = ({
   setDarkAndLightMode,
   player,
   contianer,
+  subtitlePlacement,
+  setSubtitlePlacement,
 }) => {
   const [anchorElFonts, setAnchorElFonts] = useState(null);
   const [anchorElTheme, setAnchorElTheme] = useState(null);
   const [anchorElPlayback, setAnchorElPlayback] = useState(null);
+  const [anchorElPlacement, setAnchorElPlacement] = useState(null);
 
   const settingsMenu = [
     {
@@ -32,46 +35,10 @@ const CustomMenuComponent = ({
       label: "Theme",
       onClick: (event) => setAnchorElTheme(event.currentTarget),
     },
-  ];
-
-  const themeMenu = [
-    { label: "Light", mode: "light" },
-    { label: "Dark", mode: "dark" },
-  ];
-
-  const playbackSpeed = [
     {
-      label: "0.25",
-      speed: 0.25,
-    },
-    {
-      label: "0.5",
-      speed: 0.5,
-    },
-    {
-      label: "0.75",
-      speed: 0.75,
-    },
-    {
-      label: "Normal",
-      speed: 1,
-    },
-    {
-      label: "1.25",
-      speed: 1.25,
-    },
-    {
-      label: "1.5",
-      speed: 1.5,
-    },
-    {
-      label: "1.75",
-      speed: 1.75,
-    },
-    {
-      label: "2",
-      speed: 2,
-    },
+      label: "Subtitle Placement",
+      onClick: (event) => setAnchorElPlacement(event.currentTarget),
+    }
   ];
 
   return (
@@ -185,7 +152,7 @@ const CustomMenuComponent = ({
             <Typography
               variant="body2"
               textAlign="center"
-              sx={{ fontSize: item.size, marginLeft: "10px" }}
+              sx={{ marginLeft: "10px" }}
             >
               {item.label}
             </Typography>
@@ -228,7 +195,50 @@ const CustomMenuComponent = ({
             <Typography
               variant="body2"
               textAlign="center"
-              sx={{ fontSize: item.size, marginLeft: "10px" }}
+              sx={{ marginLeft: "10px" }}
+            >
+              {item.label}
+            </Typography>
+          </MenuItem>
+        ))}
+      </Menu>
+
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorElPlacement}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        open={Boolean(anchorElPlacement)}
+        onClose={() => {
+          setAnchorElTheme(null);
+        }}
+        container={contianer}
+      >
+        {placementMenu.map((item, index) => (
+          <MenuItem
+            key={index}
+            onClick={() => {
+              setSubtitlePlacement(item.mode);
+              setAnchorElPlacement(null);
+              handleClose();
+            }}
+          >
+            <CheckIcon
+              style={{
+                visibility: subtitlePlacement === item.mode ? "" : "hidden",
+              }}
+            />
+            <Typography
+              variant="body2"
+              textAlign="center"
+              sx={{ marginLeft: "10px" }}
             >
               {item.label}
             </Typography>
