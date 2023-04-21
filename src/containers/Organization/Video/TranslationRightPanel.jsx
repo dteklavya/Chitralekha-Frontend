@@ -10,7 +10,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import CustomizedSnackbars from "../../../common/Snackbar";
 import "../../../styles/scrollbarStyle.css";
 import C from "../../../redux/constants";
-import { setSubtitles } from "../../../redux/actions/Common";
+import { setSubtitles, setTotalPages } from "../../../redux/actions/Common";
 import TimeBoxes from "../../../common/TimeBoxes";
 import ConfirmDialog from "../../../common/ConfirmDialog";
 import {
@@ -95,6 +95,7 @@ const TranslationRightPanel = ({ currentIndex }) => {
     // const data = subtitles[index];
     const sub = onSubtitleDelete(index);
     dispatch(setSubtitles(sub, C.SUBTITLES));
+    dispatch(setTotalPages(totalPages - 1));
     saveTranscriptHandler(false, true, sub);
     // setUndoStack([...undoStack, {
     //   type: "delete",
@@ -111,6 +112,7 @@ const TranslationRightPanel = ({ currentIndex }) => {
     // const targetSelectionStart = subtitles[index].target_text.length;
     const sub = onMerge(index);
     dispatch(setSubtitles(sub, C.SUBTITLES));
+    dispatch(setTotalPages(totalPages - 1));
     saveTranscriptHandler(false, true, sub);
     // setUndoStack([...undoStack, {
     //   type: "merge",
@@ -230,6 +232,7 @@ const TranslationRightPanel = ({ currentIndex }) => {
     const sub = addSubtitleBox(index);
 
     dispatch(setSubtitles(sub, C.SUBTITLES));
+    dispatch(setTotalPages(totalPages + 1));
     saveTranscriptHandler(false, true, sub);
     
     // setUndoStack([...undoStack, {

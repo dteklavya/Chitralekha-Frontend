@@ -398,11 +398,18 @@ export const getSubtitleRange = () => {
 };
 
 export const getSubtitleRangeTranscript = () => {
-  const rangeStart = store.getState().commonReducer.rangeStart;
-  const rangeEnd = store.getState().commonReducer.rangeEnd;
+  const totalPages = store.getState().commonReducer.totalPages;
+  const currentPage = store.getState().commonReducer.currentPage;
+  const limit = store.getState().commonReducer.limit;
+  const next = store.getState().commonReducer.nextPage;
 
-  if (rangeStart && rangeEnd) {
-    return `${rangeStart} - ${rangeEnd}`;
+  const startIndex = (currentPage - 1) * limit + 1;
+  const endIndex = Math.min(startIndex + limit, totalPages);
+
+  if(next) {
+    return `${startIndex} - ${endIndex - 1}`;
+  } else {
+    return `${startIndex} - ${endIndex}`;
   }
 };
 

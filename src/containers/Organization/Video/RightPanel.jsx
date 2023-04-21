@@ -7,7 +7,7 @@ import SaveTranscriptAPI from "../../../redux/actions/api/Project/SaveTranscript
 import { useNavigate, useParams } from "react-router-dom";
 import CustomizedSnackbars from "../../../common/Snackbar";
 import "../../../styles/scrollbarStyle.css";
-import { setSubtitles } from "../../../redux/actions/Common";
+import { setSubtitles, setTotalPages } from "../../../redux/actions/Common";
 import C from "../../../redux/constants";
 import TimeBoxes from "../../../common/TimeBoxes";
 import ConfirmDialog from "../../../common/ConfirmDialog";
@@ -115,7 +115,7 @@ const RightPanel = ({ currentIndex }) => {
     // }]
 
     dispatch(setSubtitles(sub, C.SUBTITLES));
-
+    dispatch(setTotalPages(totalPages - 1));
     // setUndoStack([...undoStack, {
     //   type: "merge",
     //   index: index,
@@ -140,6 +140,7 @@ const RightPanel = ({ currentIndex }) => {
     const sub = onSplit(currentIndexToSplitTextBlock, selectionStart);
 
     dispatch(setSubtitles(sub, C.SUBTITLES));
+    dispatch(setTotalPages(totalPages + 1));
 
     // setUndoStack([...undoStack, {
     //   type: "split",
@@ -241,7 +242,10 @@ const RightPanel = ({ currentIndex }) => {
   const onDelete = useCallback((index) => {
     // const data = subtitles[index];
     const sub = onSubtitleDelete(index);
+    
     dispatch(setSubtitles(sub, C.SUBTITLES));
+    dispatch(setTotalPages(totalPages - 1));
+
     saveTranscriptHandler(false, false, sub);
     // setUndoStack([...undoStack, {
     //   type: "delete",
@@ -255,7 +259,10 @@ const RightPanel = ({ currentIndex }) => {
 
   const addNewSubtitleBox = useCallback((index) => {
     const sub = addSubtitleBox(index);
+
     dispatch(setSubtitles(sub, C.SUBTITLES));
+    dispatch(setTotalPages(totalPages + 1));
+
     saveTranscriptHandler(false, false, sub);
     // setUndoStack([...undoStack, {
     //   type: "add",
