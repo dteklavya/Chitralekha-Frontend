@@ -39,7 +39,7 @@ const ProfilePage = () => {
             <Box sx={{mb:2,}} >
                 <Tabs value={tabValue} onChange={handleTabChange} aria-label="user-tabs">
                     <Tab label="Profile" sx={{ fontSize: 17, fontWeight: '700', marginRight: '28px !important' }} />
-                    <Tab label="Login & security" sx={{ fontSize: 17, fontWeight: '700', marginRight: '28px !important' }} />
+                    <Tab label="Login & Security" sx={{ fontSize: 17, fontWeight: '700', marginRight: '28px !important' }} />
                     
                 </Tabs>
             </Box>

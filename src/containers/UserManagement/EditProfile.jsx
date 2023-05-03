@@ -304,7 +304,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6"> First Name:</Typography>
+                <Typography variant="h6"> First Name</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 {editfirstName == true ? (
@@ -353,7 +353,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">Last Name:</Typography>
+                <Typography variant="h6">Last Name</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 {editlastName == true ? (
@@ -402,7 +402,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">Email :</Typography>
+                <Typography variant="h6">Email</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 {editemail == true ? (
@@ -479,7 +479,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">Phone Number :</Typography>
+                <Typography variant="h6">Phone Number</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 {editphoneNumber == true ? (
@@ -528,7 +528,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">Role :</Typography>
+                <Typography variant="h6">Role</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
               {loggedInUserData.role === "ADMIN" ||
@@ -595,7 +595,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">User Name :</Typography>
+                <Typography variant="h6">User Name</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 {editusername == true ? (
@@ -646,7 +646,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">Organization :</Typography>
+                <Typography variant="h6">Organization</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 {editorganization == true ? (
@@ -716,7 +716,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6"> Availability Status :</Typography>
+                <Typography variant="h6"> Availability Status</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 <FormControl fullWidth>
@@ -767,7 +767,7 @@ const EditProfile = () => {
               sx={{ p: 3 }}
             >
               <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-                <Typography variant="h6">Languages :</Typography>
+                <Typography variant="h6">Languages</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                 <FormControl fullWidth>
